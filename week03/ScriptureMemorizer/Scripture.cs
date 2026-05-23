@@ -2,11 +2,13 @@ public class Scripture
 {
     private Reference _reference;
     private List<Word> _words;
+    private Random _random;
 
     public Scripture(Reference reference, string text)
     {
         _reference = reference;
         _words = new List<Word>();
+        _random = new Random();
 
         string[] words = text.Split(" ");
 
@@ -18,32 +20,30 @@ public class Scripture
 
     public void HideRandomWords(int numberToHide)
     {
-        Random random = new Random();
+        int hiddenCount = 0;
 
-        int wordsHidden = 0;
-
-        while (wordsHidden < numberToHide && !IsCompletelyHidden())
+        while (hiddenCount < numberToHide && !IsCompletelyHidden())
         {
-            int index = random.Next(_words.Count);
+            int index = _random.Next(_words.Count);
 
             if (!_words[index].IsHidden())
             {
                 _words[index].Hide();
-                wordsHidden++;
+                hiddenCount++;
             }
         }
     }
 
     public string GetDisplayText()
     {
-        string scriptureText = "";
+        string text = "";
 
         foreach (Word word in _words)
         {
-            scriptureText += word.GetDisplayText() + " ";
+            text += word.GetDisplayText() + " ";
         }
 
-        return _reference.GetDisplayText() + "\n" + scriptureText;
+        return $"{_reference.GetDisplayText()}\n{text}";
     }
 
     public bool IsCompletelyHidden()
