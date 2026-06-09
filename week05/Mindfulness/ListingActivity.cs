@@ -3,20 +3,45 @@ using System.Collections.Generic;
 
 public class ListingActivity : Activity
 {
-    private List<string> _prompts;
+    private List<string> _prompts = new List<string>()
+    {
+        "Who are people you appreciate?",
+        "What are your strengths?",
+        "Who have you helped recently?"
+    };
 
     public ListingActivity()
-        : base("Listing Activity", "This activity will help you reflect on the good things in your life by listing as many things as you can.")
+        : base(
+            "Listing Activity",
+            "List as many positive things as you can."
+        )
     {
-        _prompts = new List<string>();
     }
 
     public void Run()
     {
-    }
+        DisplayStartingMessage();
 
-    public string GetRandomPrompt()
-    {
-        return "";
+        Random random = new Random();
+
+        Console.WriteLine();
+        Console.WriteLine(_prompts[random.Next(_prompts.Count)]);
+
+        Console.Write("\nBegin in: ");
+        ShowCountDown(5);
+
+        List<string> items = new List<string>();
+
+        DateTime endTime = DateTime.Now.AddSeconds(GetDuration());
+
+        while (DateTime.Now < endTime)
+        {
+            Console.Write("> ");
+            items.Add(Console.ReadLine());
+        }
+
+        Console.WriteLine($"\nYou listed {items.Count} items.");
+
+        DisplayEndingMessage();
     }
 }
